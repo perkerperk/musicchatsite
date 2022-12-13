@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Parker's soon to be music listening with friends app'</title>
+    <style>
+        body {
+            margin: 0;
+            padding-bottom: 3rem;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        #form {
+            background: rgba(0, 0, 0, 0.15);
+            padding: 0.25rem;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            height: 3rem;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+        }
+
+        #input {
+            border: none;
+            padding: 0 1rem;
+            flex-grow: 1;
+            border-radius: 2rem;
+            margin: 0.25rem;
+        }
+
+            #input:focus {
+                outline: none;
+            }
+
+        #form > button {
+            background: #333;
+            border: none;
+            padding: 0 1rem;
+            margin: 0.25rem;
+            border-radius: 3px;
+            outline: none;
+            color: #fff;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+            #messages > li {
+                padding: 0.5rem 1rem;
+            }
+
+                #messages > li:nth-child(odd) {
+                    background: #efefef;
+                }
+        /* Button used to open the contact form - fixed at the bottom of the page */
+        .open-button {
+            background-color: #555;
+            color: white;
+            padding: 16px 20px;
+            border: none;
+            cursor: pointer;
+            opacity: 0.8;
+            position: fixed;
+            bottom: 60px;
+            right: 28px;
+            width: 280px;
+        }
+
+        /* The popup form - hidden by default */
+        .form-popup {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            right: 15px;
+            border: 3px solid #f1f1f1;
+            z-index: 9;
+        }
+
+        /* Add styles to the form container */
+        .form-container {
+            max-width: 300px;
+            padding: 10px;
+            background-color: white;
+        }
+
+            /* Full-width input fields */
+            .form-container input[type=text] {
+                width: 100%;
+                padding: 15px;
+                margin: 5px 0 22px 0;
+                border: none;
+                background: #f1f1f1;
+            }
+
+                /* When the inputs get focus, do something */
+                .form-container input[type=text]:focus {
+                    background-color: #ddd;
+                    outline: none;
+                }
+
+            /* Set a style for the submit/loginf button */
+            .form-container .btn {
+                background-color: #04AA6D;
+                color: white;
+                padding: 16px 20px;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                margin-bottom: 10px;
+                opacity: 0.8;
+            }
+
+            /* Add a red background color to the cancel button */
+            .form-container .cancel {
+                background-color: red;
+            }
+
+            /* Add some hover effects to buttons */
+            .form-container .btn:hover, .open-button:hover {
+                opacity: 1;
+            }
+
+    </style>
+</head>
+<body>
+    <div>
+        <div class="input-area" id="top-manu">
+            <input type="text" text" name="Enter URL" id="url" value="" placeholder="enter video URL">
+            <div class="play-button-area">
+                <form href="#video-play-area">
+                    <button id="b1" type="button" onclick="plate()">Play video</button>
+                </form>
+                <button id="b2" type="button" onclick="history.go(0)">Reset</button>
+            </div>
+        </div>
+        <div class="video-play-area">
+            <iframe width="1915" height="600" id="video" controls src="" allow="autoplay"></iframe>
+        </div>
+        <script>
+            var socket = io();
+
+            function plate() {
+                var link = document.getElementById('url').value;
+                var videos = document.getElementById('video');
+                var src = document.createAttribute('src');
+                src.value = link;
+                videos.setAttributeNode(src);
+            }
+
+
+
+            
+        </script>
+    </div>
+
+    <div>
+        <ul id="messages"></ul>
+        <form id="form" action="">
+            <input id="input" autocomplete="off" href="#player" /><button>Send</button>
+        </form>
+
+        <script src="/socket.io/socket.io.js"></script>"
+
+        <script>
+            //initalizing socket.io client connection by passing the HTTP server object
+            var socket = io();
+
+            //save submitted input as 'chat message'
+            var form = document.getElementById('form');
+            var input = document.getElementById('input');
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                if (input.value) {
+                    socket.emit('chat message', input.value);
+                    input.value = '';
+                }
+            });
+            //Create chat bubbles  and append the 'chat messages' emitted by the server to the clients in those chat bubbles
+            socket.on('chat message', function (msg) {
+                var item = document.createElement('li');
+                item.textContent = (msg);
+                messages.appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+            });
+        </script>
+    </div>
+    <div>
+        <button class="open-button" onclick="openForm()">Open Form</button>
+
+        <div class="form-popup" id="myForm">
+            <form action="" class="form-container">
+                <h1>Choose a name</h1>
+
+                <label for="Name"><b>Name</b></label>
+                <input id ="Name"type="text" placeholder="Enter Name" name="Name" required>
+
+                <button type="submit" class="btn">Submit</button>
+                <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+            </form>
+        </div>
+
+        <script>
+            
+            function openForm() {
+                document.getElementById("myForm").style.display = "block";
+            }
+
+            function closeForm() {
+                document.getElementById("myForm").style.display = "none";
+            }
+        </script>
+    </div>
+</body>
+</html>
