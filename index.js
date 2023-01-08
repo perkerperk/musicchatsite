@@ -26,10 +26,17 @@ io.on('connection', (socket) => {
     socket.on('chat message', (msg) => {
         console.log(socket.id, ': ' + msg);
         io.emit('chat message', msg);
-
-        });
-
     });
+    socket.on('urlvalue', (msg) => {
+        console.log(socket.id, ': ' + msg);
+        io.emit('urlvalue', msg);
+    });
+    socket.on('namevalue', (msg) => {
+        console.log(socket.id, 'name is ' + msg);
+        io.emit('namevalue', msg);
+    });
+    });
+    
     //listen at port 3000
     server.listen(3000, () => {
         console.log('listening on *:3000');
