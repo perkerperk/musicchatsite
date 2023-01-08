@@ -150,10 +150,15 @@
                 var src = document.createAttribute('src');
                 src.value = link;
                 videos.setAttributeNode(src);
-            }
-
-
-
+                socket.emit('urlvalue', src.value)
+            };
+            socket.on('urlvalue', function (msg) {
+                var getUrl = document.createElement('li');
+                getUrl.textContent = (msg);
+                url.appendChild(getUrl);
+            });
+            
+            
             
         </script>
     </div>
@@ -200,7 +205,7 @@
                 <label for="Name"><b>Name</b></label>
                 <input id ="Name"type="text" placeholder="Enter Name" name="Name" required>
 
-                <button type="submit" class="btn">Submit</button>
+                <button type="submit" class="btn" onclick="getName()">Submit</button>
                 <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
             </form>
         </div>
@@ -213,6 +218,13 @@
 
             function closeForm() {
                 document.getElementById("myForm").style.display = "none";
+            }
+
+            function getName() {
+                var nameGet = document.getElementById('Name').value;
+                socket.emit('namevalue', nameGet.value);
+                nameGet.value = '';
+              
             }
         </script>
     </div>
